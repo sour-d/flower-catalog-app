@@ -3,7 +3,7 @@ const { processRequest } = require('./requestProcessor.js');
 
 const onConnection = (socket) => {
   socket.setEncoding('utf8');
-  socket.on('data', processRequest);
+  socket.on('data', (data) => processRequest(data, socket));
   socket.on('error', (err) => console.log(err));
 };
 
