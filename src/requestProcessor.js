@@ -28,7 +28,27 @@ const serveFileContent = (fileName, response) => {
   fileStream.on('close', () => response.end());
 };
 
-const serveGuestBook = (response, templateFile, commentsFile) => {
+const createTableRow = (comments) => {
+  return comments.map(comment => {
+    const tdDateTime = `<td>${comment.dateTime}</td>`;
+    const tdName = `<td>${comment.name}</td>`;
+    const tdComment = `<td>${comment.comment}</td>`;
+    return `<tr>${tdDateTime}${tdName}${tdComment}</tr>`;
+  }).join('');
+};
+
+const responseWithError = (response) => {
+  response.statusCode = 404;
+  response.writeHeaders();
+  response.write('404 Bad Request!');
+  response.end();
+};
+
+const serveGuestBook = (request, commentsFile, templateFile, response) => {
+  if (request.queryParams.name && request.queryParams.comment) {
+    saveGuestMessage(request, commentsFile, response);
+    return;
+  }
   const template = fs.readFileSync(templateFile, 'utf8');
   const rawComments = fs.readFileSync(commentsFile, 'utf8');
   const comments = JSON.parse(rawComments);
@@ -59,6 +79,9 @@ const saveGuestMessage = (request, commentsFile, response) => {
 
 const processRequest = (rawRequest, socket) => {
   const request = parseRequest(rawRequest);
+  if (request.method == 'GET') {
+    socket.end();
+  }
   console.log(`requested for ${request.URI}`);
   const response = new Response(socket);
   handler(request, response);
@@ -70,34 +93,16 @@ const handler = (request, response) => {
     return;
   }
   if (request.URI === '/guest-book') {
-    serveGuestBook(response, './res/guestBook.html', './res/comments.json');
-    return;
-  }
-  if (request.URI === '/guest-book-post') {
-    saveGuestMessage(request, './res/comments.json', response);
+    const template = './res/guestBook.html';
+    const commentsFile = './src/comments.json';
+    serveGuestBook(request, commentsFile, template, response);
     return;
   }
   if (fs.existsSync('./res' + request.URI)) {
     serveFileContent('./res' + request.URI, response);
     return;
   }
-  responseWithErro(response);
+  responseWithError(response);
 };
 
 module.exports = { processRequest };
-function createTableRow(comments) {
-  return comments.map(comment => {
-    const tdDateTime = `<td>${comment.dateTime}</td>`;
-    const tdName = `<td>${comment.name}</td>`;
-    const tdComment = `<td>${comment.comment}</td>`;
-    return `<tr>${tdDateTime}${tdName}${tdComment}</tr>`;
-  }).join('');
-}
-
-function responseWithErro(response) {
-  response.statusCode = 404;
-  response.writeHeaders();
-  response.write('404 Bad Request!');
-  response.end();
-}
-

@@ -7,6 +7,7 @@
   - [x] two flower description page
   - [x] guest book page
 
+- [x] fixed same page submit for comment
 - [ ] sort the comments in guest book
 - [ ] fix header and link in all pages
 - [ ] fix css for table

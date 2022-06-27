@@ -13,7 +13,7 @@ const parseURI = (rawURI) => {
     const params = queryParam.split('&');
     params.forEach(param => {
       const [key, value] = param.split('=');
-      queryParams[key] = value;
+      queryParams[key] = value.replaceAll('+', ' ');
     });
   }
 
