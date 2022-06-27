@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+}
+
+main {
+  display: flex;
+  flex-direction: row;
+}
+
+.main-image {
+  width: 70%;
+}
+
+.main-image>img {
+  height: 100%;
+  width: 100%;
+}
+
+header {
+  border-bottom: 1px solid black;
+  text-align: right;
+  padding-right: 100px;
+  color: orange;
+  margin-bottom: 10px;
+}
+
+h1 {
+  margin: 20px;
+}
