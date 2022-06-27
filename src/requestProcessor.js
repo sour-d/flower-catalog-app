@@ -45,12 +45,15 @@ const responseWithError = (response) => {
 };
 
 const serveGuestBook = (request, commentsFile, templateFile, response) => {
+  let rawComments = [];
+  if (fs.existsSync(commentsFile)) {
+    rawComments = fs.readFileSync(commentsFile, 'utf8');
+  }
   if (request.queryParams.name && request.queryParams.comment) {
     saveGuestMessage(request, commentsFile, response);
     return;
   }
   const template = fs.readFileSync(templateFile, 'utf8');
-  const rawComments = fs.readFileSync(commentsFile, 'utf8');
   const comments = JSON.parse(rawComments);
   const tableRows = createTableRow(comments);
 
@@ -61,7 +64,10 @@ const serveGuestBook = (request, commentsFile, templateFile, response) => {
 };
 
 const saveGuestMessage = (request, commentsFile, response) => {
-  const rawComments = fs.readFileSync(commentsFile, 'utf8');
+  let rawComments = [];
+  if (fs.existsSync(commentsFile)) {
+    rawComments = fs.readFileSync(commentsFile, 'utf8');
+  }
   const comments = JSON.parse(rawComments);
   const newComment = {
     name: request.queryParams.name,
@@ -79,8 +85,9 @@ const saveGuestMessage = (request, commentsFile, response) => {
 
 const processRequest = (rawRequest, socket) => {
   const request = parseRequest(rawRequest);
-  if (request.method == 'GET') {
+  if (request.method !== 'GET') {
     socket.end();
+    return;
   }
   console.log(`requested for ${request.URI}`);
   const response = new Response(socket);
