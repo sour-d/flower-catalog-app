@@ -4,5 +4,5 @@
 - [x] create `res` folder to store all the resource file like html, pdf etc
 - [ ] add html files of flowers
   - [x] homepage
-  - [ ] two flower description page
+  - [x] two flower description page
   - [ ] guest book page

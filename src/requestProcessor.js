@@ -6,7 +6,8 @@ const contentType = {
   html: 'text/html',
   jpeg: 'image/jpeg',
   png: 'image/png',
-  css: 'text/css'
+  css: 'text/css',
+  pdf: 'application/pdf'
 };
 
 const getContentType = (filename) => {
@@ -18,6 +19,9 @@ const serveFileContent = (fileName, response) => {
   const fileStream = fs.createReadStream(fileName);
 
   response.addHeader('Content-type', getContentType(fileName));
+  if (getContentType(fileName) === 'application/pdf') {
+    response.addHeader('Content-Disposition', 'attachment');
+  }
   response.writeHeaders();
 
   fileStream.on('data', (chunk) => response.write(chunk));
