@@ -64,7 +64,7 @@ const serveGuestBook = (request, commentsFile, templateFile, response) => {
 };
 
 const saveGuestMessage = (request, commentsFile, response) => {
-  let rawComments = [];
+  let rawComments = '[]';
   if (fs.existsSync(commentsFile)) {
     rawComments = fs.readFileSync(commentsFile, 'utf8');
   }
