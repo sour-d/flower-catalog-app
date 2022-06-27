@@ -45,7 +45,7 @@ const responseWithError = (response) => {
 };
 
 const serveGuestBook = (request, commentsFile, templateFile, response) => {
-  let rawComments = [];
+  let rawComments = '[]';
   if (fs.existsSync(commentsFile)) {
     rawComments = fs.readFileSync(commentsFile, 'utf8');
   }
