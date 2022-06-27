@@ -28,6 +28,35 @@ const serveFileContent = (fileName, response) => {
   fileStream.on('close', () => response.end());
 };
 
+const serveGuestBook = (response, templateFile, commentsFile) => {
+  const template = fs.readFileSync(templateFile, 'utf8');
+  const rawComments = fs.readFileSync(commentsFile, 'utf8');
+  const comments = JSON.parse(rawComments);
+  const tableRows = createTableRow(comments);
+
+  response.addHeader('Content-type', getContentType(templateFile));
+  response.writeHeaders();
+  response.write(template.replaceAll('__TABLE_CONTENT__', tableRows));
+  response.end();
+};
+
+const saveGuestMessage = (request, commentsFile, response) => {
+  const rawComments = fs.readFileSync(commentsFile, 'utf8');
+  const comments = JSON.parse(rawComments);
+  const newComment = {
+    name: request.queryParams.name,
+    dateTime: new Date(),
+    comment: request.queryParams.comment,
+  };
+  comments.push(newComment);
+  fs.writeFileSync(commentsFile, JSON.stringify(comments), 'utf8');
+
+  response.statusCode = 302;
+  response.addHeader('Location', '/guest-book');
+  response.writeHeaders();
+  response.end();
+};
+
 const processRequest = (rawRequest, socket) => {
   const request = parseRequest(rawRequest);
   console.log(`requested for ${request.URI}`);
@@ -40,10 +69,14 @@ const handler = (request, response) => {
     serveFileContent('./res/index.html', response);
     return;
   }
-  // if (request.URI === '/') {
-  //   serveFileContent('./res/index.html', response);
-  //   return;
-  // }
+  if (request.URI === '/guest-book') {
+    serveGuestBook(response, './res/guestBook.html', './res/comments.json');
+    return;
+  }
+  if (request.URI === '/guest-book-post') {
+    saveGuestMessage(request, './res/comments.json', response);
+    return;
+  }
   if (fs.existsSync('./res' + request.URI)) {
     serveFileContent('./res' + request.URI, response);
     return;
@@ -52,6 +85,15 @@ const handler = (request, response) => {
 };
 
 module.exports = { processRequest };
+function createTableRow(comments) {
+  return comments.map(comment => {
+    const tdDateTime = `<td>${comment.dateTime}</td>`;
+    const tdName = `<td>${comment.name}</td>`;
+    const tdComment = `<td>${comment.comment}</td>`;
+    return `<tr>${tdDateTime}${tdName}${tdComment}</tr>`;
+  }).join('');
+}
+
 function responseWithErro(response) {
   response.statusCode = 404;
   response.writeHeaders();

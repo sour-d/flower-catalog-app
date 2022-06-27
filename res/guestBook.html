@@ -1,0 +1,49 @@
+<html>
+
+<head>
+  <title>Guest Book</title>
+  <link rel="stylesheet" href="stylesheets/guestBook.css">
+</head>
+
+<body>
+  <section class="page-heading">
+    <header>
+      <h1>
+        <a href="">&lt;&lt;</a>Guest Book
+      </h1>
+    </header>
+  </section>
+  <section>
+    <header>
+      <h1>Leave a comment</h1>
+    </header>
+    <form action="/guest-book-post">
+      <div>
+        <label for="name">Name</label>
+        <input type="text" name="name" id="name">
+      </div>
+      <div>
+        <label for="comment">Comment</label>
+        <textarea cols="20" rows="5" name="comment"></textarea>
+      </div>
+      <div>
+        <input type="submit" value="Submit">
+      </div>
+    </form>
+  </section>
+  <hr>
+  <section class="comments">
+    <table>
+      <thead>
+        <tr>
+          <td>Date-Time</td>
+          <td>Name</td>
+          <td>Comment</td>
+        </tr>
+      </thead>
+      __TABLE_CONTENT__
+    </table>
+  </section>
+</body>
+
+</html>

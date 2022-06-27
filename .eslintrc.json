@@ -55,7 +55,7 @@
         "max": 4
       }
     ],
-    "max-statements": "error",
+    // "max-statements": "error",
     // "no-console": "error",
     "no-else-return": "error",
     "no-eval": "error",
@@ -68,10 +68,10 @@
     "no-useless-return": "error",
     "max-depth": "error",
     "no-mixed-operators": "error",
-    "complexity": [
-      "error",
-      4
-    ],
+    // "complexity": [
+    //   "error",
+    //   4
+    // ],
     // "no-extra-parens": "error",
     "no-template-curly-in-string": "error",
     "array-callback-return": "error",
