@@ -8,9 +8,9 @@ const onConnection = (socket) => {
 };
 
 const server = () => {
-  const PORT = 4444;
+  const PORT = 8000;
   const server = createServer(onConnection);
   server.listen(PORT, () => console.log(`Listening to localhost:${PORT}`));
 };
 
-server();
+module.exports = { server };

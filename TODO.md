@@ -1,8 +1,8 @@
 **TODO**
 
 - [x] add handler to handle routes
-- [ ] create `res` folder to store all the resource file like html, pdf etc
+- [x] create `res` folder to store all the resource file like html, pdf etc
 - [ ] add html files of flowers
-  - [ ] homepage
+  - [x] homepage
   - [ ] two flower description page
   - [ ] guest book page
