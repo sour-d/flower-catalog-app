@@ -1,15 +1,9 @@
-const { createServer } = require('net');
+const http = require('http');
 const { processRequest } = require('./requestProcessor.js');
-
-const onConnection = (socket) => {
-  socket.setEncoding('utf8');
-  socket.on('data', (data) => processRequest(data, socket));
-  socket.on('error', (err) => console.log(err));
-};
 
 const server = () => {
   const PORT = 8000;
-  const server = createServer(onConnection);
+  const server = http.createServer(processRequest);
   server.listen(PORT, () => console.log(`Listening to localhost:${PORT}`));
 };
 

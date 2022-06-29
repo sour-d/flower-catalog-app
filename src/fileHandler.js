@@ -3,6 +3,8 @@ const fs = require('fs');
 const contentType = {
   html: 'text/html',
   jpeg: 'image/jpeg',
+  jpg: 'image/jpg',
+  gif: 'image/gif',
   png: 'image/png',
   css: 'text/css',
   pdf: 'application/pdf'
@@ -17,11 +19,10 @@ const serveFileContent = (fileName, response) => {
   const fileStream = fs.createReadStream(fileName);
 
   const mimeType = getContentType(fileName);
-  response.addHeader('Content-type', mimeType);
+  response.setHeader('Content-type', mimeType);
   if (mimeType === 'application/pdf') {
-    response.addHeader('Content-Disposition', 'attachment');
+    response.setHeader('Content-Disposition', 'attachment');
   }
-  response.writeHeaders();
 
   fileStream.on('data', (chunk) => response.write(chunk));
   fileStream.on('close', () => response.end());

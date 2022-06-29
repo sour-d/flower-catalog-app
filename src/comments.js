@@ -17,9 +17,9 @@ class Comments {
   update(commentData) {
     const comments = this.get();
     const newComment = {
-      name: commentData.name,
-      dateTime: new Date(),
-      comment: commentData.comment,
+      name: commentData.get('name'),
+      dateTime: new Date().toLocaleString(),
+      comment: commentData.get('comment'),
     };
     comments.push(newComment);
     fs.writeFileSync(this.#filePath, JSON.stringify(comments), 'utf8');
