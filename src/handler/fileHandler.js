@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { responseWithError } = require('./errorHandler.js');
 
 const contentType = {
   html: 'text/html',
@@ -15,17 +16,24 @@ const getContentType = (filename) => {
   return contentType[extension.toLowerCase()];
 };
 
-const serveFileContent = (fileName, response) => {
-  const fileStream = fs.createReadStream(fileName);
+// const serveFileContent = 
 
-  const mimeType = getContentType(fileName);
-  response.setHeader('Content-type', mimeType);
-  if (mimeType === 'application/pdf') {
-    response.setHeader('Content-Disposition', 'attachment');
-  }
+const createFileHandler = (rootDir) => {
+  return (request, response) => {
+    const fileName = rootDir + request.url.pathname;
+    if (!fs.existsSync(fileName)) {
+      return responseWithError(response);
+    }
+    const fileStream = fs.createReadStream(fileName);
+    const mimeType = getContentType(fileName);
+    response.setHeader('Content-type', mimeType);
+    if (mimeType === 'application/pdf') {
+      response.setHeader('Content-Disposition', 'attachment');
+    }
 
-  fileStream.on('data', (chunk) => response.write(chunk));
-  fileStream.on('close', () => response.end());
+    fileStream.on('data', (chunk) => response.write(chunk));
+    fileStream.on('close', () => response.end());
+  };
 };
 
-exports.serveFileContent = serveFileContent;
+module.exports = { createFileHandler };

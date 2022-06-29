@@ -1,19 +1,18 @@
-const { handleRoutes } = require('./handler/routes.js');
+const { initateRouters } = require('./handler/routes.js');
 
-const matches = function (method, pathname) {
-  const url = new URL(this.url, `http://${this.headers.host}`);
-  return this.method === method && url.pathname === pathname;
+const logRequestDetails = (req) => {
+  console.log(`[${req.method}] ==> ${req.url.pathname}`);
 };
 
-const processRequest = (request, response) => {
-  // if (request.method !== 'GET') {
-  //   response.end();
-  //   return;
-  // }
+const getHostName = (req) => 'http://' + req.headers.host;
 
-  console.log(`[${request.method}] ==> ${request.url}`);
-  request.matches = matches.bind(request);
-  handleRoutes(request, response);
+const processRequest = (req, res) => {
+  req.url = new URL(req.url, getHostName(req));
+
+  const router = initateRouters();
+  logRequestDetails(req);
+  router.handle(req, res);
 };
 
 module.exports = { processRequest };
+

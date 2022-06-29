@@ -1,4 +1,5 @@
 const fs = require('fs');
+const { Comments } = require('./comments.js');
 
 const toTableDataTag = (content) => {
   return `<td>${content}</td>`;
@@ -30,17 +31,19 @@ const serveGuestBook = (template, comments, response) => {
   response.end();
 };
 
-const handleGuestBookRequest = (request, comments, templateFile, response) => {
-
-  const url = new URL(request.url, `http://${request.headers.host}`);
-  if (url.searchParams.get('name') && url.searchParams.get('comment')) {
-    comments.update(url.searchParams);
-    redirectBack(response, '/guest-book');
-    return;
-  }
-  const template = fs.readFileSync(templateFile, 'utf8');
-  serveGuestBook(template, comments, response);
+const createGuestBookHandler = (templateFile, CommentsFile) => {
+  const comments = new Comments(CommentsFile);
+  return (req, res) => {
+    const params = req.url.searchParams;
+    if (params.get('name') && params.get('comment')) {
+      comments.update(params);
+      redirectBack(res, '/guest-book');
+      return;
+    }
+    const template = fs.readFileSync(templateFile, 'utf8');
+    serveGuestBook(template, comments, res);
+  };
 };
 
-module.exports = { handleGuestBookRequest };
+module.exports = { createGuestBookHandler };
 
