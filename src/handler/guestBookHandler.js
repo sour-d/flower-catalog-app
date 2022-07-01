@@ -19,6 +19,7 @@ const createTableRow = (comments) => {
 
 const redirectBack = (response, location) => {
   response.statusCode = 302;
+  response.method = 'GET';
   response.setHeader('Location', location);
   response.end();
 };
@@ -33,14 +34,15 @@ const serveGuestBook = (template, comments, response) => {
 
 const createGuestBookHandler = (templateFile, CommentsFile) => {
   const comments = new Comments(CommentsFile);
+  const template = fs.readFileSync(templateFile, 'utf8');
+
   return (req, res) => {
-    const params = req.url.searchParams;
+    const params = req.body;
     if (params.get('name') && params.get('comment')) {
       comments.update(params);
       redirectBack(res, '/guest-book');
       return;
     }
-    const template = fs.readFileSync(templateFile, 'utf8');
     serveGuestBook(template, comments, res);
   };
 };

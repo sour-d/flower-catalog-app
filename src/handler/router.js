@@ -4,7 +4,8 @@ class Router {
 
   constructor(defaultHandler) {
     this.#routes = {
-      GET: []
+      GET: [],
+      POST: []
     };
     this.#defaultHandler = defaultHandler;
   }
@@ -12,9 +13,13 @@ class Router {
   GET(url, handler,) {
     this.#routes.GET.push({ method: 'GET', url, handler });
   }
+  POST(url, handler,) {
+    this.#routes.POST.push({ method: 'POST', url, handler });
+  }
 
   #findRoute(url, method) {
-    return this.#routes[method].filter(route => route.url === url);
+    const routes = this.#routes[method.toUpperCase()];
+    return routes.filter(route => route.url === url);
   }
 
   handle(request, response) {

@@ -21,7 +21,7 @@ class Comments {
       dateTime: new Date().toLocaleString(),
       comment: commentData.get('comment'),
     };
-    comments.push(newComment);
+    comments.unshift(newComment);
     fs.writeFileSync(this.#filePath, JSON.stringify(comments), 'utf8');
   }
 }

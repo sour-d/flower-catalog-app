@@ -19,6 +19,7 @@ const initateRouters = () => {
 
   router.GET('/', homePageHandler);
   router.GET('/guest-book', guestBookHandler);
+  router.POST('/add-comment', guestBookHandler);
   router.GET('/api/comments', commentsApi);
 
   return router;
