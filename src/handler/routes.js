@@ -1,3 +1,4 @@
+const { commentsApi } = require('./api.js');
 const { createFileHandler } = require('./fileHandler.js');
 const { createGuestBookHandler } = require('./guestBookHandler.js');
 const { Router } = require('./router.js');
@@ -18,6 +19,7 @@ const initateRouters = () => {
 
   router.GET('/', homePageHandler);
   router.GET('/guest-book', guestBookHandler);
+  router.GET('/api/comments', commentsApi);
 
   return router;
 };

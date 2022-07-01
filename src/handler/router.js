@@ -14,9 +14,7 @@ class Router {
   }
 
   #findRoute(url, method) {
-    return this.#routes[method].filter(route => {
-      return route.url === url;
-    });
+    return this.#routes[method].filter(route => route.url === url);
   }
 
   handle(request, response) {
