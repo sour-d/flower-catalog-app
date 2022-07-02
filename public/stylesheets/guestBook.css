@@ -3,3 +3,25 @@
   color: orange;
   text-align: center;
 }
+
+.comments {
+  width: 100%;
+}
+
+table {
+  width: 100%;
+}
+
+body {
+  font-size: 20px;
+  margin: 0px 200px;
+}
+
+h1 {
+  margin: 5px 0px;
+}
+
+table>thead {
+  text-align: left;
+  /* border-bottom: 1px solid black; */
+}

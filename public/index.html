@@ -3,6 +3,14 @@
 <head>
   <title>Flower Catalog Book</title>
   <link rel="stylesheet" href="stylesheets/index.css">
+  <script>
+    const hideFlowerPot = () => {
+      const flowerPot = document.getElementById('flowerPot');
+
+      flowerPot.classList.add('hide');
+      setTimeout(() => flowerPot.classList.remove('hide'), 2000);
+    }
+  </script>
 </head>
 
 <body>
@@ -15,11 +23,14 @@
         <img src="images/freshorigins.jpg" alt="freshorigins">
       </div>
       <aside>
+        <h4>Flowers</h4>
         <ul>
           <li><a href="abeliophyllum.html">Abeliophyllum</a></li>
           <li><a href="agerantum.html">Agerantum</a></li>
         </ul>
-        <img src="images/animated-flower-image-0021.gif" alt="">
+        <figure><img src="images/animated-flower-image-0021.gif" alt="" id="flowerPot" onclick="hideFlowerPot()"
+            height="100px" width="100px">
+        </figure>
         <div><a href="guest-book">Guest Book</a></div>
       </aside>
     </main>

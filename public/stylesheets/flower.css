@@ -2,3 +2,14 @@ article {
   display: flex;
   align-items: center;
 }
+
+header>h1 {
+  margin: 20px 0px;
+  text-align: center;
+  color: orange;
+}
+
+body {
+  font-size: 20px;
+  margin: 0px 200px;
+}
