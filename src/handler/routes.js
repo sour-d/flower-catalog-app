@@ -14,15 +14,15 @@ const homePageHandler = (req, res) => {
   serveFileContent(req, res);
 };
 
-const initateRouters = () => {
+const initateRouters = (req, res, sessions) => {
   const router = new Router(serveFileContent);
 
   router.GET('/', homePageHandler);
   router.GET('/guest-book', guestBookHandler);
   router.POST('/add-comment', guestBookHandler);
   router.GET('/api/comments', commentsApi);
-
-  return router;
+  router.handle(req, res, sessions);
+  // return router;
 };
 
 module.exports = { initateRouters };

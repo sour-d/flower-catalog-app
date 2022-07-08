@@ -22,15 +22,15 @@ class Router {
     return routes.filter(route => route.url === url);
   }
 
-  handle(request, response) {
+  handle(request, response, sessions) {
     const routes = this.#findRoute(request.url.pathname, request.method);
     for (const route of routes) {
       if (route.method === request.method) {
-        return route.handler(request, response);
+        return route.handler(request, response, sessions);
       }
     }
 
-    this.#defaultHandler(request, response);
+    this.#defaultHandler(request, response, sessions);
   }
 }
 

@@ -1,4 +1,6 @@
 const { initateRouters } = require('./handler/routes.js');
+const { injectCookies } = require('./injectCookies.js');
+const { Sessions, injectSession } = require('./session.js');
 
 const logRequestDetails = (req) => {
   console.log(`[${req.method}] ==> ${req.url.pathname}`);
@@ -10,6 +12,8 @@ const parseBody = (data, req) => {
   req.body = new URLSearchParams(data);
 };
 
+const sessions = new Sessions();
+
 const processRequest = (req, res) => {
   req.url = new URL(req.url, getHostName(req));
   let data = '';
@@ -19,9 +23,11 @@ const processRequest = (req, res) => {
   });
   req.on('close', () => {
     parseBody(data, req);
-    const router = initateRouters();
+    injectCookies(req, res);
+    injectSession(req, res, sessions);
     logRequestDetails(req);
-    router.handle(req, res);
+    console.log(req.cookies, req.session);
+    initateRouters(req, res, sessions);
   });
 };
 
