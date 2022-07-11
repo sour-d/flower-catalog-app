@@ -8,7 +8,8 @@ const contentType = {
   gif: 'image/gif',
   png: 'image/png',
   css: 'text/css',
-  pdf: 'application/pdf'
+  pdf: 'application/pdf',
+  js: 'text/javascript'
 };
 
 const getContentType = (filename) => {
