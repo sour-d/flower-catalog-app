@@ -11,18 +11,26 @@ class Comments {
       const comments = fs.readFileSync(this.#filePath, 'utf8');
       return JSON.parse(comments);
     }
-    return [];
+    return {
+      LastCommentId: 0,
+      totalComments: 0,
+      comments: []
+    };
   }
 
-  update(commentData) {
-    const comments = this.get();
+  update(latestComment) {
+    const commentData = this.get();
+    const latestId = ++commentData.LastCommentId;
     const newComment = {
-      name: commentData.get('name'),
+      id: latestId,
+      name: latestComment.get('name'),
       dateTime: new Date().toLocaleString(),
-      comment: commentData.get('comment'),
+      comment: latestComment.get('comment'),
     };
-    comments.unshift(newComment);
-    fs.writeFileSync(this.#filePath, JSON.stringify(comments), 'utf8');
+    commentData.comments.unshift(newComment);
+    commentData.totalComments++;
+
+    fs.writeFileSync(this.#filePath, JSON.stringify(commentData), 'utf8');
   }
 }
 

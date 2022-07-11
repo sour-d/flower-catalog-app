@@ -3,8 +3,14 @@ const addComment = () => {
   const formData = new FormData(form);
   const body = new URLSearchParams(formData).toString();
 
+  const reqOptions = {
+    url: '/add-comment',
+    method: 'POST',
+    body: body,
+    callback: onload
+  };
   disableFields(form);
-  sendRequest(body, onload);
+  sendRequest(reqOptions);
 };
 
 const disableFields = (form) => {
@@ -13,12 +19,12 @@ const disableFields = (form) => {
   }
 };
 
-const sendRequest = (body, onload = () => { }) => {
+const sendRequest = (reqOptions) => {
   const xhr = new XMLHttpRequest();
-  xhr.open('POST', '/add-comment');
-  xhr.send(body);
+  xhr.open(reqOptions.method, reqOptions.url);
+  xhr.send(reqOptions.body);
 
-  xhr.onload = () => onload(xhr);
+  xhr.onload = () => reqOptions.callback(xhr);
 };
 
 const onload = (res) => {

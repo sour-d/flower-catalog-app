@@ -22,11 +22,12 @@ const initateRouters = (req, res, sessions) => {
   router.GET('/', homePageHandler);
   router.GET('/guest-book', guestBookHandler);
   router.POST('/add-comment', guestBookHandler);
-  router.GET('/api/comments', commentsApi);
   router.GET('/login', loginHandler);
   router.POST('/login', loginHandler);
+
+  router.GET('/api/comments', commentsApi);
+
   router.handle(req, res, sessions);
-  // return router;
 };
 
 module.exports = { initateRouters };

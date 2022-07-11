@@ -12,6 +12,9 @@ const toTableRowTag = (...tableDatas) => {
 };
 
 const createTableRow = (comments) => {
+  if (!comments) {
+    return '';
+  }
   return comments.map(({ dateTime, name, comment }) => {
     return toTableRowTag(dateTime, name, comment);
   }).join('');
@@ -25,7 +28,7 @@ const redirectBack = (response, location) => {
 };
 
 const serveGuestBook = (template, comments, response) => {
-  const tableRows = createTableRow(comments.get());
+  const tableRows = createTableRow(comments.get().comments);
 
   response.setHeader('Content-type', 'text/html');
   response.write(template.replace('__TABLE_CONTENT__', tableRows));

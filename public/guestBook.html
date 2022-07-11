@@ -3,6 +3,7 @@
 <head>
   <title>Guest Book</title>
   <script src="/addComment.js"></script>
+  <script src="/fetchComments.js"></script>
   <link rel="stylesheet" href="stylesheets/guestBook.css">
 </head>
 
@@ -19,7 +20,7 @@
     <header>
       <h1>Leave a comment</h1>
     </header>
-    <form action="/add-comment" method="post">
+    <form>
       <div>
         <label for="name">Name</label>
         <input type="text" name="name" id="name">
