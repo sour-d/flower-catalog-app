@@ -9,13 +9,13 @@ const addComment = () => {
     body: body,
     callback: onload
   };
-  disableFields(form);
+  eraseFields(form);
   sendRequest(reqOptions);
 };
 
-const disableFields = (form) => {
+const eraseFields = (form) => {
   for (const field of form.elements) {
-    field.setAttribute('disabled', 'disabled');
+    field.setAttribute('value', '');
   }
 };
 
@@ -28,7 +28,6 @@ const sendRequest = (reqOptions) => {
 };
 
 const onload = (res) => {
-  console.log(res);
   if (res.status !== 200) {
     console.log('Request is not successfull.');
   }

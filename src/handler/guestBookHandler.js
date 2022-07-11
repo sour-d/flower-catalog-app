@@ -5,18 +5,17 @@ const toTableDataTag = (content) => {
   return `<td>${content}</td>`;
 };
 
-const toTableRowTag = (...tableDatas) => {
+const toTableRowTag = (tableRowId, ...tableDatas) => {
   const tdTags = tableDatas.map(toTableDataTag).join('');
-
-  return `<tr>${tdTags}</tr>`;
+  return `<tr id="${tableRowId}">${tdTags}</tr>`;
 };
 
 const createTableRow = (comments) => {
   if (!comments) {
     return '';
   }
-  return comments.map(({ dateTime, name, comment }) => {
-    return toTableRowTag(dateTime, name, comment);
+  return comments.map(({ id, dateTime, name, comment }) => {
+    return toTableRowTag(id, dateTime, name, comment);
   }).join('');
 };
 
