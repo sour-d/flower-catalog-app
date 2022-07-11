@@ -26,7 +26,6 @@ const processRequest = (req, res) => {
     injectCookies(req, res);
     injectSession(req, res, sessions);
     logRequestDetails(req);
-    console.log(req.cookies, req.session);
     initateRouters(req, res, sessions);
   });
 };

@@ -37,6 +37,10 @@ const createGuestBookHandler = (templateFile, CommentsFile) => {
   const template = fs.readFileSync(templateFile, 'utf8');
 
   return (req, res) => {
+    if (!req.session) {
+      redirectBack(res, '/login');
+      return;
+    }
     const params = req.body;
     if (params.get('name') && params.get('comment')) {
       comments.update(params);
