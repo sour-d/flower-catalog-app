@@ -1,5 +1,6 @@
 const { initateRouters } = require('./handler/routes.js');
 const { injectCookies } = require('./injectCookies.js');
+const { injectComments } = require('./injectComments.js');
 const { Sessions, injectSession } = require('./session.js');
 
 const logRequestDetails = (req) => {
@@ -25,6 +26,7 @@ const processRequest = (req, res) => {
     parseBody(data, req);
     injectCookies(req, res);
     injectSession(req, res, sessions);
+    injectComments(req, res);
     logRequestDetails(req);
     initateRouters(req, res, sessions);
   });

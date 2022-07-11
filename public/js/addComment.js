@@ -4,7 +4,7 @@ const addComment = () => {
   const body = new URLSearchParams(formData).toString();
 
   const reqOptions = {
-    url: '/add-comment',
+    url: '/api/add-comment',
     method: 'POST',
     body: body,
     callback: onload

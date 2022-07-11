@@ -10,14 +10,21 @@ const toTableRowTag = (tableRowId, ...tableDatas) => {
   return trTag;
 };
 
+const hasNewComment = (totalComments) => {
+  const tbody = document.querySelector('tbody');
+  const trTags = tbody.getElementsByTagName('tr');
+  return trTags.length !== totalComments;
+}
+
 const showComments = (res) => {
   const tbody = document.querySelector('tbody');
   const commentsData = JSON.parse(res.response);
-  const trTags = tbody.getElementsByTagName('tr');
-  if (trTags.length === commentsData.totalComments) {
+
+  if (!hasNewComment(commentsData.totalComments)) {
     return;
   }
-  for (const commentDetails of commentsData.comments.reverse()) {
+
+  for (const commentDetails of commentsData.comments) {
     const trTag = document.getElementById(commentDetails.id);
     if (!trTag) {
       const { id, dateTime, name, comment } = commentDetails;
@@ -27,7 +34,7 @@ const showComments = (res) => {
   }
 };
 
-const fetchComments = () => {
+const fetchNewComments = () => {
   const intervalId = setInterval(() => {
     const reqOptions = {
       url: '/api/comments',
@@ -39,4 +46,15 @@ const fetchComments = () => {
   }, 1000);
 };
 
-window.onload = fetchComments;
+const main = () => {
+  const reqOptions = {
+    url: '/api/comments',
+    method: 'GET',
+    body: '',
+    callback: showComments
+  };
+  sendRequest(reqOptions);
+  fetchNewComments();
+}
+
+window.onload = main;
