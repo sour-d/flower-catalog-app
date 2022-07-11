@@ -2,8 +2,16 @@
 
 <head>
   <title>Guest Book</title>
+  <script src="/js/xhr.js"></script>
   <script src="/js/addComment.js"></script>
   <script src="/js/fetchComments.js"></script>
+  <script src="/js/user.js"></script>
+  <script>
+    window.onload = () => {
+      getUserDetails();
+      LoadComments();
+    }
+  </script>
   <link rel="stylesheet" href="stylesheets/guestBook.css">
 </head>
 

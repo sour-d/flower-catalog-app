@@ -1,4 +1,4 @@
-const { commentsApi } = require('./api.js');
+const { commentsApi, userApiHandler } = require('./api.js');
 const { createFileHandler } = require('./fileHandler.js');
 const { addCommentHandler, guestBookPageHandler } = require('./guestBookHandler.js');
 const { createLoginHandler } = require('./loginHandler.js');
@@ -22,6 +22,7 @@ const initateRouters = (req, res, sessions) => {
 
   router.GET('/api/comments', commentsApi);
   router.POST('/api/add-comment', addCommentHandler);
+  router.GET('/api/user', userApiHandler);
 
   router.handle(req, res, sessions);
 };

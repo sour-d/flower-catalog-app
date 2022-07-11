@@ -14,17 +14,7 @@ const addComment = () => {
 };
 
 const eraseFields = (form) => {
-  for (const field of form.elements) {
-    field.setAttribute('value', '');
-  }
-};
-
-const sendRequest = (reqOptions) => {
-  const xhr = new XMLHttpRequest();
-  xhr.open(reqOptions.method, reqOptions.url);
-  xhr.send(reqOptions.body);
-
-  xhr.onload = () => reqOptions.callback(xhr);
+  form.querySelector('textarea[name="comment"]').value = '';
 };
 
 const onload = (res) => {

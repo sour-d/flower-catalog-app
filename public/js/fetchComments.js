@@ -46,7 +46,7 @@ const fetchNewComments = () => {
   }, 1000);
 };
 
-const main = () => {
+const LoadComments = () => {
   const reqOptions = {
     url: '/api/comments',
     method: 'GET',
@@ -56,5 +56,3 @@ const main = () => {
   sendRequest(reqOptions);
   fetchNewComments();
 }
-
-window.onload = main;

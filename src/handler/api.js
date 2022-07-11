@@ -12,4 +12,8 @@ const commentsApi = (req, res) => {
   res.end();
 };
 
-module.exports = { commentsApi };
+const userApiHandler = (req, res) => {
+  res.end(JSON.stringify({ name: req.session.name }));
+}
+
+module.exports = { commentsApi, userApiHandler };
