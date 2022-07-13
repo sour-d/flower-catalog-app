@@ -13,24 +13,27 @@ const parseBody = (data, req) => {
   req.body = new URLSearchParams(data);
 };
 
-const sessions = new Sessions();
-
-const processRequest = (req, res) => {
+const parseUrl = (req) => {
   req.url = new URL(req.url, getHostName(req));
-  let data = '';
+};
+
+const main = (req, res, sessions, body) => {
+  parseUrl(req);
+  logRequestDetails(req);
+
+  parseBody(body, req);
+  injectCookies(req, res);
+  injectSession(req, res, sessions);
+  injectComments(req, res);
+  initateRouters(req, res, sessions);
+};
+
+const sessions = new Sessions();
+const processRequest = (req, res) => {
+  let rawBody = '';
   req.setEncoding('utf8');
-  req.on('data', (chunk) => {
-    data += chunk;
-  });
-  req.on('close', () => {
-    parseBody(data, req);
-    injectCookies(req, res);
-    injectSession(req, res, sessions);
-    injectComments(req, res);
-    logRequestDetails(req);
-    initateRouters(req, res, sessions);
-  });
+  req.on('data', (chunk) => rawBody += chunk);
+  req.on('close', () => main(req, res, sessions, rawBody));
 };
 
 module.exports = { processRequest };
-
