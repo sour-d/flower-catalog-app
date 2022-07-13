@@ -1,7 +1,7 @@
 const { initateRouters } = require('./handler/routes.js');
-const { injectCookies } = require('./injectCookies.js');
+const { injectCookies } = require('./server/injectCookies.js');
 const { injectComments } = require('./injectComments.js');
-const { Sessions, injectSession } = require('./session.js');
+const { Sessions, injectSession } = require('./server/session.js');
 
 const logRequestDetails = (req) => {
   console.log(`[${req.method}] ==> ${req.url.pathname}`);

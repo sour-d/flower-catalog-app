@@ -1,5 +1,5 @@
 const http = require('http');
-const { processRequest } = require('../requestProcessor.js');
+const { processRequest } = require('../app.js');
 
 const server = () => {
   const PORT = 8000;

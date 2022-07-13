@@ -2,7 +2,7 @@ const { commentsApi, userApiHandler } = require('./api.js');
 const { createFileHandler } = require('./fileHandler.js');
 const { addCommentHandler, guestBookPageHandler } = require('./guestBookHandler.js');
 const { createLoginHandler } = require('./loginHandler.js');
-const { Router } = require('./router.js');
+const { Router } = require('../server/router.js');
 
 const serveFileContent = createFileHandler('./public');
 const loginHandler = createLoginHandler(serveFileContent);
