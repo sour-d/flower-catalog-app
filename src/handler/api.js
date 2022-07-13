@@ -7,12 +7,16 @@ const commentsApi = (req, res) => {
   }
 
   content = JSON.parse(content);
-  res.setHeader('Content_type', 'text/json');
+  res.setHeader('Content-type', 'application/json');
   res.write(JSON.stringify(content));
   res.end();
 };
 
 const userApiHandler = (req, res) => {
+  if (!req.session) {
+    res.end('{}');
+    return;
+  }
   res.end(JSON.stringify({ name: req.session.name }));
 }
 

@@ -22,7 +22,7 @@ const initateRouters = (req, res, sessions) => {
 
   router.GET('/api/comments', commentsApi);
   router.POST('/api/add-comment', addCommentHandler);
-  router.GET('/api/user', userApiHandler);
+  router.POST('/api/user', userApiHandler);
 
   router.handle(req, res, sessions);
 };

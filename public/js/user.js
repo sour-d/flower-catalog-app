@@ -8,7 +8,7 @@ const fillUserName = (res) => {
 const getUserDetails = () => {
   const reqOptions = {
     url: '/api/user',
-    method: 'GET',
+    method: 'POST',
     callback: fillUserName
   };
 
