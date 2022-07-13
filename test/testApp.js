@@ -71,19 +71,12 @@ describe('GET /login', () => {
 });
 
 describe('POST /login', () => {
-  it('Should set cookie for /login in POST', (done) => {
+  it('Should set cookie', (done) => {
     request(app)
       .post('/login')
       .send('name=sourav')
       .expect('location', '/guest-book')
       .expect('set-cookie', /^sessionId=[\d]+$/)
-      .expect(302, done);
-  });
-
-  it('Should redirect to login of cookie not passed', (done) => {
-    request(app)
-      .get('/guest-book')
-      .expect('location', '/login')
       .expect(302, done);
   });
 });
@@ -102,14 +95,14 @@ describe('GET /guest-book', () => {
       .expect(200, done);
   });
 
-  it('Should serve guestbook page if cookie not passed', (done) => {
+  it('Should serve login page if cookie not passed', (done) => {
     request(app)
       .get('/guest-book')
       .expect('location', '/login')
       .expect(302, done);
   });
 
-  it('Should serve guestbook page if cookie is invalid', (done) => {
+  it('Should serve login page if cookie is invalid', (done) => {
     request(app)
       .get('/guest-book')
       .set('cookie', 'sessionId=1234')
@@ -119,7 +112,7 @@ describe('GET /guest-book', () => {
 });
 
 describe('GET /api/comments', () => {
-  it('Should all comments', (done) => {
+  it('Should return all comments', (done) => {
     request(app)
       .get('/api/comments')
       .expect('content-type', 'application/json')
@@ -143,14 +136,14 @@ describe('GET /api/add-comment', () => {
       .expect(200, done);
   });
 
-  it('Should serve guestbook page if cookie not passed', (done) => {
+  it('Should serve login page if cookie not passed', (done) => {
     request(app)
       .post('/api/add-comment')
       .expect('location', '/login')
       .expect(302, done);
   });
 
-  it('Should serve guestbook page if cookie is invalid', (done) => {
+  it('Should serve login page if cookie is invalid', (done) => {
     request(app)
       .post('/api/add-comment')
       .set('cookie', 'sessionId=1234')

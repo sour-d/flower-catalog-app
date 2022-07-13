@@ -5,7 +5,7 @@ const redirectBack = (response, location) => {
   response.end();
 };
 
-const createLoginHandler = serveFileConten =>
+const createLoginHandler = serveFileContent =>
   (req, res, sessions) => {
     if (req.session) {
       redirectBack(res, '/guest-book');
@@ -13,7 +13,7 @@ const createLoginHandler = serveFileConten =>
     }
     if (req.method === 'GET') {
       req.url.pathname = '/login.html';
-      serveFileConten(req, res);
+      serveFileContent(req, res);
       return;
     }
     const name = req.body.get('name');
