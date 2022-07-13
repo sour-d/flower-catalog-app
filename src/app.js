@@ -1,7 +1,7 @@
 const { initateRouters } = require('./handler/routes.js');
 const { injectCookies } = require('./server/injectCookies.js');
 const { injectComments } = require('./injectComments.js');
-const { Sessions, injectSession } = require('./server/session.js');
+const { injectSession } = require('./server/session.js');
 
 const getHostName = (req) => 'http://' + req.headers.host;
 
@@ -13,7 +13,7 @@ const parseUrl = (req) => {
   req.url = new URL(req.url, getHostName(req));
 };
 
-const main = (req, res, sessions, body) => {
+const handleRequest = (req, res, sessions, body) => {
   parseUrl(req);
 
   parseBody(body, req);
@@ -24,12 +24,12 @@ const main = (req, res, sessions, body) => {
   initateRouters(req, res, sessions);
 };
 
-// const sessions = new Sessions();
-const createApp = sessions => (req, res) => {
-  let rawBody = '';
-  req.setEncoding('utf8');
-  req.on('data', (chunk) => rawBody += chunk);
-  req.on('close', () => main(req, res, sessions, rawBody));
-};
+const createApp = (sessions) =>
+  (req, res) => {
+    let rawBody = '';
+    req.setEncoding('utf8');
+    req.on('data', (chunk) => rawBody += chunk);
+    req.on('close', () => handleRequest(req, res, sessions, rawBody));
+  };
 
 module.exports = { createApp };
