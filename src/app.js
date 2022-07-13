@@ -3,10 +3,6 @@ const { injectCookies } = require('./server/injectCookies.js');
 const { injectComments } = require('./injectComments.js');
 const { Sessions, injectSession } = require('./server/session.js');
 
-const logRequestDetails = (req) => {
-  console.log(`[${req.method}] ==> ${req.url.pathname}`);
-};
-
 const getHostName = (req) => 'http://' + req.headers.host;
 
 const parseBody = (data, req) => {
@@ -19,7 +15,6 @@ const parseUrl = (req) => {
 
 const main = (req, res, sessions, body) => {
   parseUrl(req);
-  logRequestDetails(req);
 
   parseBody(body, req);
   injectCookies(req, res);
