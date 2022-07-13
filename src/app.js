@@ -20,15 +20,16 @@ const main = (req, res, sessions, body) => {
   injectCookies(req, res);
   injectSession(req, res, sessions);
   injectComments(req, res);
+
   initateRouters(req, res, sessions);
 };
 
-const sessions = new Sessions();
-const processRequest = (req, res) => {
+// const sessions = new Sessions();
+const createApp = sessions => (req, res) => {
   let rawBody = '';
   req.setEncoding('utf8');
   req.on('data', (chunk) => rawBody += chunk);
   req.on('close', () => main(req, res, sessions, rawBody));
 };
 
-module.exports = { processRequest };
+module.exports = { createApp };
