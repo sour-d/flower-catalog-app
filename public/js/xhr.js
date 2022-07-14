@@ -1,4 +1,5 @@
 const setHeaders = ({ headers }, xhr) => {
+  console.log(headers);
   if (headers) {
     for (const headerName in headers) {
       const headerValue = headers[headerName];
@@ -12,7 +13,6 @@ const sendRequest = (reqOptions) => {
 
   xhr.open(reqOptions.method, reqOptions.url);
   setHeaders(reqOptions, xhr);
-
   if (reqOptions.body) {
     xhr.send(reqOptions.body);
   } else {

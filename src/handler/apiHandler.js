@@ -7,11 +7,11 @@ const redirectBack = (response, location) => {
 
 const commentsApi = (req, res) => {
   if (!req.session) {
-    redirectBack(res, '/login');
+    res.redirect('/login.html');
     return;
   }
   const comments = req.comments.get();
-  res.setHeader('Content-type', 'application/json');
+  res.set('Content-type', 'application/json');
   res.write(JSON.stringify(comments));
   res.end();
 };
@@ -26,15 +26,14 @@ const currentUserApi = (req, res) => {
 
 const addCommentApi = (req, res) => {
   if (!req.session) {
-    redirectBack(res, '/login');
+    res.redirect('/login.html');
     return;
   }
-  const params = req.body;
-  if (params.get('name') && params.get('comment')) {
-    req.comments.update(params);
-    res.setHeader('content-type', 'application/json');
+  if (req.body.name && req.body.comment) {
+    req.comments.update(req.body);
+    res.set('content-type', 'application/json');
     res.write(JSON.stringify({ updated: true }));
-    res.end()
+    res.end();
   }
 };
 

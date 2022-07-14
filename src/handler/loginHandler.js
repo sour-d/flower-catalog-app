@@ -5,28 +5,25 @@ const redirectBack = (response, location) => {
   response.end();
 };
 
-const createLoginHandler = serveFileContent =>
-  (req, res, sessions) => {
-    if (req.session) {
-      redirectBack(res, '/guest-book');
-      return;
-    }
-    if (req.method === 'GET') {
-      req.url.pathname = '/login.html';
-      serveFileContent(req, res);
-      return;
-    }
-    const name = req.body.get('name');
-    res.statusCode = 302;
-    if (name) {
-      const sessionId = sessions.create({ name });
-      res.setHeader('location', '/guest-book');
-      res.setHeader('Set-Cookie', 'sessionId=' + sessionId);
-      res.end();
-      return;
-    }
-    res.setHeader('location', '/login');
-    res.end();
-  };
+const loginHandler = (req, res, next) => {
+  if (req.session) {
+    res.redirect('/guest-book');
+    return;
+  }
+  // if (req.method === 'GET') {
+  //   // req.path = '/login.html';
+  //   res.redirect('/login.html');
+  //   next();
+  //   return;
+  // }
+  const name = req.body.name;
+  if (name) {
+    const sessionId = req.sessions.create({ name });
+    res.cookie('sessionId', sessionId);
+    res.redirect('/guest-book');
+    return;
+  }
+  res.redirect('/login.html');
+};
 
-module.exports = { createLoginHandler };
+module.exports = { loginHandler };

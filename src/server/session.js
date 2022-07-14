@@ -1,5 +1,7 @@
-const injectSession = (req, res, sessions) => {
-  req.session = sessions.get(req.cookies.sessionId);
+const injectSession = (sessions) => (req, res, next) => {
+  req.session = sessions.get(req.cookies?.sessionId);
+  req.sessions = sessions;
+  next();
 };
 
 class Sessions {

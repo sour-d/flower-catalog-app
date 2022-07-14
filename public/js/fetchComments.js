@@ -18,6 +18,7 @@ const hasNewComment = (totalComments) => {
 
 const showComments = (res) => {
   const tbody = document.querySelector('tbody');
+  console.log(res);
   const commentsData = JSON.parse(res.response);
 
   if (!hasNewComment(commentsData.totalComments)) {
@@ -37,18 +38,18 @@ const showComments = (res) => {
 const fetchNewComments = () => {
   const intervalId = setInterval(() => {
     const reqOptions = {
-      url: '/api/comments',
+      url: '/api/guestbook/comments',
       method: 'GET',
       body: '',
       callback: showComments
     };
     sendRequest(reqOptions);
-  }, 1000);
+  }, 10000);
 };
 
 const LoadComments = () => {
   const reqOptions = {
-    url: '/api/comments',
+    url: '/api/guestbook/comments',
     method: 'GET',
     body: '',
     callback: showComments

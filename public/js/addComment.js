@@ -4,11 +4,15 @@ const addComment = () => {
   const body = new URLSearchParams(formData).toString();
 
   const reqOptions = {
-    url: '/api/add-comment',
+    url: '/api/guestbook/comments',
     method: 'POST',
     body: body,
-    callback: onload
+    callback: onload,
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded'
+    }
   };
+  console.log(body);
   eraseFields(form);
   sendRequest(reqOptions);
 };

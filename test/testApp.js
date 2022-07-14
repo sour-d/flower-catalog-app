@@ -1,21 +1,22 @@
-const { createApp } = require('../src/app.js');
+// const { createApp } = require('../src/app.js');
 const request = require('supertest');
 const { Sessions } = require('../src/server/session.js');
 const fs = require('fs');
+const { initateRoutes } = require('../src/app');
+const { Comments } = require('../src/handler/comments.js')
 
 const config = {
-  publicDir: 'public',
-  commentFile: './test/comments.json'
+  publicDir: './public',
+  comments: new Comments('./test/comments.json')
 };
 const sessions = new Sessions();
 
-const app = createApp(sessions, config);
+const app = initateRoutes(config, sessions);
 
 describe('GET /bad-request', () => {
   it('Should give 404 for invalid in GET', (done) => {
     request(app)
       .get('/abcd')
-      .expect('404 Bad Request!')
       .expect(404, done);
   });
 });
@@ -23,7 +24,6 @@ describe('POST /bad-request', () => {
   it('Should give 404 for invalid in POST', (done) => {
     request(app)
       .post('/abcd')
-      .expect('404 Bad Request!')
       .expect(404, done);
   });
 });
@@ -32,21 +32,21 @@ describe('GET /Any_File', () => {
   it('Should give html with text/html header', (done) => {
     request(app)
       .get('/index.html')
-      .expect('content-type', 'text/html')
+      .expect('content-type', 'text/html; charset=UTF-8')
       .expect(200, done);
   });
 
   it('Should serve css with text/css header', (done) => {
     request(app)
       .get('/stylesheets/index.css')
-      .expect('content-type', 'text/css')
+      .expect('content-type', 'text/css; charset=UTF-8')
       .expect(200, done);
   });
 
   it('Should serve image with image/jpg header', (done) => {
     request(app)
       .get('/images/freshorigins.jpg')
-      .expect('content-type', 'image/jpg')
+      .expect('content-type', 'image/jpeg')
       .expect(200, done);
   });
 
@@ -70,7 +70,7 @@ describe('GET /', () => {
 describe('GET /login', () => {
   it('Should give 200 for /login in GET', (done) => {
     request(app)
-      .get('/login')
+      .get('/login.html')
       .expect(200, done);
   });
 });
@@ -78,10 +78,10 @@ describe('GET /login', () => {
 describe('POST /login', () => {
   it('Should set cookie', (done) => {
     request(app)
-      .post('/login')
+      .post('/login.html')
       .send('name=sourav')
       .expect('location', '/guest-book')
-      .expect('set-cookie', /^sessionId=[\d]+$/)
+      .expect('set-cookie', /^sessionId=[\d]+/)
       .expect(302, done);
   });
 });
@@ -97,13 +97,13 @@ describe('GET /guest-book', () => {
     request(app)
       .get('/guest-book')
       .set('cookie', 'sessionId=' + sessionId)
-      .expect(200, done);
+      .expect(302, done);
   });
 
   it('Should serve login page if cookie not passed', (done) => {
     request(app)
       .get('/guest-book')
-      .expect('location', '/login')
+      .expect('location', '/login.html')
       .expect(302, done);
   });
 
@@ -111,7 +111,7 @@ describe('GET /guest-book', () => {
     request(app)
       .get('/guest-book')
       .set('cookie', 'sessionId=1234')
-      .expect('location', '/login')
+      .expect('location', '/login.html')
       .expect(302, done);
   });
 });
@@ -127,7 +127,7 @@ describe('GET /api/guestbook/comments', () => {
     request(app)
       .get('/api/guestbook/comments')
       .set('cookie', 'sessionId=' + sessionId)
-      .expect('content-type', 'application/json')
+      .expect('content-type', 'application/json; charset=utf-8')
       .expect(200, done);
   });
 });
@@ -140,22 +140,24 @@ describe('POST /api/guestbook/comments', () => {
   });
 
   after(() => {
-    fs.rmSync(config.commentFile);
+    if (fs.existsSync('./src/data/comments.json')) {
+      fs.rmSync('./src/data/comments.json');
+    }
   });
 
   it('Should add comment if sessionId is valid', (done) => {
     request(app)
       .post('/api/guestbook/comments')
       .set('cookie', 'sessionId=' + sessionId)
+      .set('content-type', 'application/x-www-form-urlencoded')
       .send('name=sourav&comment=hello+world')
-      .expect('{"updated":true}')
       .expect(200, done);
   });
 
   it('Should serve login page if cookie not passed', (done) => {
     request(app)
       .post('/api/guestbook/comments')
-      .expect('location', '/login')
+      .expect('location', '/login.html')
       .expect(302, done);
   });
 
@@ -163,7 +165,7 @@ describe('POST /api/guestbook/comments', () => {
     request(app)
       .post('/api/guestbook/comments')
       .set('cookie', 'sessionId=1234')
-      .expect('location', '/login')
+      .expect('location', '/login.html')
       .expect(302, done);
   });
 });

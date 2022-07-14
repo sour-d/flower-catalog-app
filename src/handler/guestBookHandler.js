@@ -1,6 +1,6 @@
-const { createFileHandler } = require('./fileHandler.js');
+// const { createFileHandler } = require('./fileHandler.js');
 
-const serveFileContent = createFileHandler('./public');
+// const serveFileContent = createFileHandler('./public');
 
 const redirectBack = (response, location) => {
   response.statusCode = 302;
@@ -10,13 +10,13 @@ const redirectBack = (response, location) => {
 };
 
 
-const guestBookHandler = (req, res) => {
-  req.url.pathname = '/guestBook.html';
+const guestBookHandler = (req, res, next) => {
   if (!req.session) {
-    redirectBack(res, '/login');
+    res.redirect('/login.html');
     return;
   }
-  serveFileContent(req, res);
+  res.redirect('/guestBook.html');
+  next();
 };
 
 

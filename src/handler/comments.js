@@ -23,9 +23,9 @@ class Comments {
     const latestId = ++commentData.LastCommentId;
     const newComment = {
       id: latestId,
-      name: latestComment.get('name'),
+      name: latestComment.name,
       dateTime: new Date().toLocaleString(),
-      comment: latestComment.get('comment'),
+      comment: latestComment.comment,
     };
     commentData.comments.push(newComment);
     commentData.totalComments++;

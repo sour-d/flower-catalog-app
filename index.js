@@ -1,14 +1,12 @@
-const { createApp } = require('./src/app.js');
-const { createServer } = require('./src/server/server.js');
-const { Sessions } = require('./src/server/session.js');
+const { Comments } = require('./src/handler/comments.js');
 
+const { initateRoutes } = require("./src/app");
+const { Sessions } = require("./src/server/session");
 
 const config = {
-  publicDir: 'public',
-  commentFile: './src/data/comments.json'
+  publicDir: './public',
+  comments: new Comments('./src/data/comments.json')
 };
-
-const app = createApp(new Sessions(), config);
-const server = createServer(app);
-
-server();
+const sessions = new Sessions();
+const app = initateRoutes(config, sessions);
+app.listen(8000, () => console.log('Server Running'));

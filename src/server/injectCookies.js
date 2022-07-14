@@ -10,9 +10,10 @@ const parseCookie = (cookieString) => {
   return parsedCookies;
 };
 
-const injectCookies = (req) => {
-  const cookieString = req.headers.cookie;
+const injectCookies = (req, res, next) => {
+  const cookieString = req.get('Cookie');
   req.cookies = cookieString ? parseCookie(cookieString) : {};
+  next();
 };
 
 module.exports = { injectCookies };
