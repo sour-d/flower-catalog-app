@@ -17,15 +17,16 @@ const createLoginHandler = serveFileContent =>
       return;
     }
     const name = req.body.get('name');
+    res.statusCode = 302;
     if (name) {
       const sessionId = sessions.create({ name });
-      res.statusCode = 302;
       res.setHeader('location', '/guest-book');
       res.setHeader('Set-Cookie', 'sessionId=' + sessionId);
       res.end();
       return;
     }
-    res.send('not found');
+    res.setHeader('location', '/login');
+    res.end();
   };
 
 module.exports = { createLoginHandler };

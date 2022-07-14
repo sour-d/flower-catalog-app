@@ -17,14 +17,14 @@ const getContentType = (filename) => {
   return contentType[extension.toLowerCase()];
 };
 
-// const serveFileContent = 
-
 const createFileHandler = (rootDir) => {
   return (request, response) => {
     const fileName = rootDir + request.url.pathname;
+
     if (!fs.existsSync(fileName)) {
       return responseWithError(response);
     }
+
     const fileStream = fs.createReadStream(fileName);
     const mimeType = getContentType(fileName);
     response.setHeader('Content-type', mimeType);

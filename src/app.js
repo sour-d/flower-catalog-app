@@ -5,13 +5,15 @@ const { injectSession } = require('./server/session.js');
 const { Router } = require('./server/router.js');
 
 const { createFileHandler } = require('./handler/fileHandler.js');
-const { commentsApi, userApiHandler } = require('./handler/api.js');
 const { createLoginHandler } = require('./handler/loginHandler.js');
 const { createHomePageHandler } = require("./handler/homePageHandler");
+const { guestBookHandler } = require('./handler/guestBookHandler.js');
+
 const {
-  addCommentHandler,
-  guestBookPageHandler
-} = require('./handler/guestBookHandler.js');
+  commentsApi,
+  currentUserApi,
+  addCommentApi
+} = require('./handler/apiHandler.js');
 
 const getHostName = (req) => 'http://' + req.headers.host;
 
@@ -29,25 +31,30 @@ const handleRequest = (req, res, sessions, body, router) => {
   parseBody(body, req);
   injectCookies(req, res);
   injectSession(req, res, sessions);
-  injectComments(req, res);
+  injectComments(req, res, config.commentFile);
 
   router.handle(req, res, sessions);
 };
 
-const getHandlers = () => {
-  const serveFileContent = createFileHandler('./public');
+const getHandlers = (config) => {
+  const serveFileContent = createFileHandler(config.publicDir);
   const homePageHandler = createHomePageHandler(serveFileContent);
   const loginHandler = createLoginHandler(serveFileContent);
   return {
-    commentsApi, userApiHandler, serveFileContent,
-    loginHandler, homePageHandler, addCommentHandler, guestBookPageHandler
+    commentsApi, currentUserApi, serveFileContent,
+    loginHandler, homePageHandler, addCommentApi, guestBookHandler
   };
 }
 
-const createApp = (sessions, config) => {
-  const serveFileContent = createFileHandler('./public');
+const config = {
+  publicDir: 'public',
+  commentFile: './src/comments.json'
+}
+
+const createApp = (sessions) => {
+  const serveFileContent = createFileHandler(config.publicDir);
   const router = new Router(serveFileContent);
-  const handlers = getHandlers();
+  const handlers = getHandlers(config);
   initateRouters(router, handlers);
 
   return (req, res) => {

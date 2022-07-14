@@ -10,7 +10,7 @@ const redirectBack = (response, location) => {
 };
 
 
-const guestBookPageHandler = (req, res) => {
+const guestBookHandler = (req, res) => {
   req.url.pathname = '/guestBook.html';
   if (!req.session) {
     redirectBack(res, '/login');
@@ -19,20 +19,6 @@ const guestBookPageHandler = (req, res) => {
   serveFileContent(req, res);
 };
 
-const addCommentHandler = (req, res) => {
-  if (!req.session) {
-    redirectBack(res, '/login');
-    return;
-  }
-  const params = req.body;
-  if (params.get('name') && params.get('comment')) {
-    req.comments.update(params);
-    res.setHeader('content-type', 'application/json');
-    res.write(JSON.stringify({ updated: true }));
-    res.end()
-  }
-};
 
-
-module.exports = { addCommentHandler, guestBookPageHandler };
+module.exports = { guestBookHandler };
 
