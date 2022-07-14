@@ -6,6 +6,10 @@ const redirectBack = (response, location) => {
 };
 
 const commentsApi = (req, res) => {
+  if (!req.session) {
+    redirectBack(res, '/login');
+    return;
+  }
   const comments = req.comments.get();
   res.setHeader('Content-type', 'application/json');
   res.write(JSON.stringify(comments));

@@ -5,7 +5,7 @@
   },
   "name": "flowercatalog",
   "version": "1.0.0",
-  "main": "startServer.js",
+  "main": "index.js",
   "directories": {
     "test": "test"
   },
@@ -117,7 +117,7 @@
   "scripts": {
     "test": "mocha",
     "test-w": "mocha -w",
-    "start": "node ./startServer.js"
+    "start": "node ./index.js"
   },
   "repository": {
     "type": "git",

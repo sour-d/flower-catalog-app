@@ -25,16 +25,17 @@ const parseUrl = (req) => {
   req.url = new URL(req.url, getHostName(req));
 };
 
-const handleRequest = (req, res, sessions, body, router) => {
-  parseUrl(req);
+const createRequestHandler = (config, sessions, router) =>
+  (req, res, body) => {
+    parseUrl(req);
 
-  parseBody(body, req);
-  injectCookies(req, res);
-  injectSession(req, res, sessions);
-  injectComments(req, res, config.commentFile);
+    parseBody(body, req);
+    injectCookies(req, res);
+    injectSession(req, res, sessions);
+    injectComments(req, res, config.commentFile);
 
-  router.handle(req, res, sessions);
-};
+    router.handle(req, res, sessions);
+  };
 
 const getHandlers = (config) => {
   const serveFileContent = createFileHandler(config.publicDir);
@@ -46,22 +47,18 @@ const getHandlers = (config) => {
   };
 }
 
-const config = {
-  publicDir: 'public',
-  commentFile: './src/comments.json'
-}
-
-const createApp = (sessions) => {
+const createApp = (sessions, config) => {
   const serveFileContent = createFileHandler(config.publicDir);
   const router = new Router(serveFileContent);
   const handlers = getHandlers(config);
+  const handleRequest = createRequestHandler(config, sessions, router);
   initateRouters(router, handlers);
 
   return (req, res) => {
     let rawBody = '';
     req.setEncoding('utf8');
     req.on('data', (chunk) => rawBody += chunk);
-    req.on('close', () => handleRequest(req, res, sessions, rawBody, router));
+    req.on('close', () => handleRequest(req, res, rawBody));
   };
 };
 

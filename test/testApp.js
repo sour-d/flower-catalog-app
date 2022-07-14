@@ -1,10 +1,15 @@
 const { createApp } = require('../src/app.js');
 const request = require('supertest');
 const { Sessions } = require('../src/server/session.js');
+const fs = require('fs');
 
+const config = {
+  publicDir: 'public',
+  commentFile: './test/comments.json'
+};
 const sessions = new Sessions();
 
-const app = createApp(sessions);
+const app = createApp(sessions, config);
 
 describe('GET /bad-request', () => {
   it('Should give 404 for invalid in GET', (done) => {
@@ -111,25 +116,36 @@ describe('GET /guest-book', () => {
   });
 });
 
-describe('GET /api/comments', () => {
-  it('Should return all comments', (done) => {
-    request(app)
-      .get('/api/comments')
-      .expect('content-type', 'application/json')
-      .expect(200, done);
-  });
-});
-
-describe('GET /api/add-comment', () => {
+describe('GET /api/guestbook/comments', () => {
   let sessionId;
 
   beforeEach(() => {
     sessionId = sessions.create({ name: 'admin' });
   });
 
+  it('Should return all comments', (done) => {
+    request(app)
+      .get('/api/guestbook/comments')
+      .set('cookie', 'sessionId=' + sessionId)
+      .expect('content-type', 'application/json')
+      .expect(200, done);
+  });
+});
+
+describe('POST /api/guestbook/comments', () => {
+  let sessionId;
+
+  beforeEach(() => {
+    sessionId = sessions.create({ name: 'admin' });
+  });
+
+  after(() => {
+    fs.rmSync(config.commentFile);
+  });
+
   it('Should add comment if sessionId is valid', (done) => {
     request(app)
-      .post('/api/add-comment')
+      .post('/api/guestbook/comments')
       .set('cookie', 'sessionId=' + sessionId)
       .send('name=sourav&comment=hello+world')
       .expect('{"updated":true}')
@@ -138,14 +154,14 @@ describe('GET /api/add-comment', () => {
 
   it('Should serve login page if cookie not passed', (done) => {
     request(app)
-      .post('/api/add-comment')
+      .post('/api/guestbook/comments')
       .expect('location', '/login')
       .expect(302, done);
   });
 
   it('Should serve login page if cookie is invalid', (done) => {
     request(app)
-      .post('/api/add-comment')
+      .post('/api/guestbook/comments')
       .set('cookie', 'sessionId=1234')
       .expect('location', '/login')
       .expect(302, done);
