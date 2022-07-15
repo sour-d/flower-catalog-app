@@ -7,7 +7,7 @@ const redirectBack = (response, location) => {
 
 const commentsApi = (req, res) => {
   if (!req.session) {
-    res.redirect('/login.html');
+    res.redirect('/login');
     return;
   }
   const comments = req.comments.get();
@@ -26,7 +26,7 @@ const currentUserApi = (req, res) => {
 
 const addCommentApi = (req, res) => {
   if (!req.session) {
-    res.redirect('/login.html');
+    res.redirect('/login');
     return;
   }
   if (req.body.name && req.body.comment) {

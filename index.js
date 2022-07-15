@@ -1,5 +1,4 @@
 const { Comments } = require('./src/handler/comments.js');
-
 const { initateRoutes } = require("./src/app");
 const { Sessions } = require("./src/server/session");
 

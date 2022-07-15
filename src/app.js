@@ -1,6 +1,8 @@
+const express = require('express');
+
 const { injectCookies } = require('./server/injectCookies.js');
 const { injectComments } = require('./injectComments.js');
-const { injectSession } = require('./server/session.js');
+const { injectSession } = require('./server/injectSession.js');
 
 const { loginHandler } = require('./handler/loginHandler.js');
 const { guestBookHandler } = require('./handler/guestBookHandler.js');
@@ -12,14 +14,12 @@ const {
 } = require('./handler/apiHandler.js');
 
 const logRequest = (req, res, next) => {
-  console.log(req.method + '  ' + req.path);
+  console.log(`[${req.method}] ==> ${req.path}`);
   next();
 };
 
-const express = require('express');
 
 const initateRoutes = (config, sessions) => {
-
   const app = express();
 
   app.use(logRequest);
@@ -32,7 +32,8 @@ const initateRoutes = (config, sessions) => {
 
 
   app.get('/guest-book', guestBookHandler);
-  app.post('/login.html', loginHandler);
+  app.get('/login', loginHandler(sessions));
+  app.post('/login', loginHandler(sessions));
 
   app.get('/api/guestbook/comments', commentsApi);
   app.post('/api/guestbook/comments', addCommentApi);

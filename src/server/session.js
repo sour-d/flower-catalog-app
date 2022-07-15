@@ -1,9 +1,3 @@
-const injectSession = (sessions) => (req, res, next) => {
-  req.session = sessions.get(req.cookies?.sessionId);
-  req.sessions = sessions;
-  next();
-};
-
 class Sessions {
   #sessions;
 
@@ -29,4 +23,4 @@ class Sessions {
   }
 }
 
-module.exports = { Sessions, injectSession };
+module.exports = { Sessions };

@@ -1,7 +1,6 @@
-// const { createApp } = require('../src/app.js');
+const fs = require('fs');
 const request = require('supertest');
 const { Sessions } = require('../src/server/session.js');
-const fs = require('fs');
 const { initateRoutes } = require('../src/app');
 const { Comments } = require('../src/handler/comments.js')
 
@@ -70,7 +69,7 @@ describe('GET /', () => {
 describe('GET /login', () => {
   it('Should give 200 for /login in GET', (done) => {
     request(app)
-      .get('/login.html')
+      .get('/login')
       .expect(200, done);
   });
 });
@@ -78,7 +77,7 @@ describe('GET /login', () => {
 describe('POST /login', () => {
   it('Should set cookie', (done) => {
     request(app)
-      .post('/login.html')
+      .post('/login')
       .send('name=sourav')
       .expect('location', '/guest-book')
       .expect('set-cookie', /^sessionId=[\d]+/)
@@ -97,13 +96,13 @@ describe('GET /guest-book', () => {
     request(app)
       .get('/guest-book')
       .set('cookie', 'sessionId=' + sessionId)
-      .expect(302, done);
+      .expect(200, done);
   });
 
   it('Should serve login page if cookie not passed', (done) => {
     request(app)
       .get('/guest-book')
-      .expect('location', '/login.html')
+      .expect('location', '/login')
       .expect(302, done);
   });
 
@@ -111,7 +110,7 @@ describe('GET /guest-book', () => {
     request(app)
       .get('/guest-book')
       .set('cookie', 'sessionId=1234')
-      .expect('location', '/login.html')
+      .expect('location', '/login')
       .expect(302, done);
   });
 });
@@ -157,7 +156,7 @@ describe('POST /api/guestbook/comments', () => {
   it('Should serve login page if cookie not passed', (done) => {
     request(app)
       .post('/api/guestbook/comments')
-      .expect('location', '/login.html')
+      .expect('location', '/login')
       .expect(302, done);
   });
 
@@ -165,7 +164,7 @@ describe('POST /api/guestbook/comments', () => {
     request(app)
       .post('/api/guestbook/comments')
       .set('cookie', 'sessionId=1234')
-      .expect('location', '/login.html')
+      .expect('location', '/login')
       .expect(302, done);
   });
 });
