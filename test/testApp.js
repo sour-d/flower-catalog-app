@@ -1,8 +1,8 @@
 const fs = require('fs');
 const request = require('supertest');
-const { Sessions } = require('../src/server/session.js');
-const { initateRoutes } = require('../src/app');
-const { Comments } = require('../src/handler/comments.js')
+const { Sessions } = require('../src/model/session.js');
+const { initateRoutes } = require('../src/app.js');
+const { Comments } = require('../src/model/comments.js')
 
 const config = {
   publicDir: './public',

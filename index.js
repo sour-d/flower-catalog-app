@@ -1,6 +1,6 @@
-const { Comments } = require('./src/handler/comments.js');
+const { Comments } = require('./src/model/comments.js');
 const { initateRoutes } = require("./src/app");
-const { Sessions } = require("./src/server/session");
+const { Sessions } = require("./src/model/session");
 
 const config = {
   publicDir: './public',

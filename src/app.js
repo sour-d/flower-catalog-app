@@ -1,8 +1,8 @@
 const express = require('express');
 
-const { injectCookies } = require('./server/injectCookies.js');
-const { injectComments } = require('./injectComments.js');
-const { injectSession } = require('./server/injectSession.js');
+const { injectCookies } = require('./middleware/injectCookies.js');
+const { injectComments } = require('./middleware/injectComments.js');
+const { injectSession } = require('./middleware/injectSession.js');
 
 const { loginHandler } = require('./handler/loginHandler.js');
 const { guestBookHandler } = require('./handler/guestBookHandler.js');
