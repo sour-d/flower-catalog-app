@@ -140,8 +140,8 @@ describe('POST /api/guestbook/comments', () => {
   });
 
   after(() => {
-    if (fs.existsSync('./src/data/comments.json')) {
-      fs.rmSync('./src/data/comments.json');
+    if (fs.existsSync('./test/comments.json')) {
+      fs.rmSync('./test/comments.json');
     }
   });
 
