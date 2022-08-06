@@ -20,4 +20,8 @@ const loginHandler = (sessions) => (req, res, next) => {
   res.redirect('/login');
 };
 
+const loginPageHandler = () => {
+
+}
+
 module.exports = { loginHandler };

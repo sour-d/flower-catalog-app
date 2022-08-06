@@ -1,4 +1,4 @@
-const injectComments = (req, res, next, comments) => {
+const injectComments = (comments) => (req, res, next) => {
   req.comments = comments;
   next();
 };
