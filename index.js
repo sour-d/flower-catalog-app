@@ -8,4 +8,4 @@ const config = {
 };
 const sessions = new Sessions();
 const app = initateRoutes(config, sessions);
-app.listen(8000, () => console.log('Server Running'));
+app.listen(process.env.PORT, () => console.log('Server Running', process.env.PORT));
