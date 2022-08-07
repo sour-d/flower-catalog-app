@@ -6,6 +6,8 @@ const config = {
   publicDir: './public',
   comments: new Comments('./src/data/comments.json')
 };
+
+const PORT = process.env.PORT || 5000;
 const sessions = new Sessions();
 const app = initateRoutes(config, sessions);
-app.listen(process.env.PORT, () => console.log('Server Running', process.env.PORT));
+app.listen(PORT, () => console.log('Server Running', PORT));
